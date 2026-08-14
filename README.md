@@ -3,7 +3,7 @@
 DeepSeek Harness Web GUI 的暗黑哥特风皮肤插件。沥青黑底、血晶红与熔火金点缀、骨白正文，半透明磨砂面板透出程序化余烬背景。
 
 - 纯呈现层：不注入服务、不发事件、不触碰模型请求，只操作 DOM 与 CSS token。
-- 无静态素材：favicon 为内联 SVG，背景为程序化 CSS 渐变，**不含任何受版权保护的位图或第三方 logo**（不涉及 Blizzard/Diablo 商标资产）。
+- 素材全部内联、**不携带任何静态资源文件**：favicon 徽记（48px PNG）、石纹（256px JPEG）、圣所插画（640×480 JPEG）为 AI 生成且可商用授权的位图，已降采样压缩后内联 data URI；裂纹符文为自绘内联 SVG；余烬 / 暗角为程序化 CSS 渐变。不含 Blizzard / Diablo 商标资产，不含任何第三方版权素材。
 - 亮/暗两套配色同源：亮面是「日晒骨白 parchment」变体，暗面是「沥青黑 + 余烬熔火」，跟随系统 `light/dark/system` 自动切换。
 
 ## 安装
@@ -12,9 +12,11 @@ DeepSeek Harness Web GUI 的暗黑哥特风皮肤插件。沥青黑底、血晶�
 # 从本地目录
 dsh plugin --profile web add /path/to/dsh-skin-diablo-dark
 
-# 或从 git 仓库（prepare 会自动构建 lib/）
+# 或从 git 仓库（安装时会在 clone 内执行 prepare 自动构建 lib/，需要能联网拉取 npm 依赖）
 dsh plugin --profile web add github:<owner>/dsh-skin-diablo-dark
 ```
+
+> 若 pnpm 拦截了构建脚本（pnpm 10 的安全门禁），会打印提示，把提示里给出的包名加到 profile 的 `pnpm-workspace.yaml` 的 `allowBuilds` 下，再重跑一次即可。
 
 装完重启 `dsh web` 生效。皮肤会在 Web 壳里设置 `body[data-dsh-diablo-dark]`，样式全部挂在该属性下，卸载即还原。
 
@@ -58,7 +60,7 @@ tests/apply.spec.ts          # apply/dispose 契约测试
 
 ## 试穿与截图
 
-本仓库暂未带 gallery 模拟器。可挂进 [dsh-web-ui](https://github.com/zhu1090093659/dsh-web-ui) 的皮肤中心试穿，或直接 `dsh web` 里切主题看效果。发布到皮肤中心需要补 `preview/{light,dark}.png` 截图。
+本仓库暂未带 gallery 模拟器。可挂进 [dsh-web-ui](https://github.com/zhu1090093659/dsh-web-ui) 的皮肤中心试穿，或直接 `dsh web` 里切主题看效果。皮肤中心预览图已就位：`preview/dark.png`（暗黑风皮肤只出 dark 预览，不做 light）。
 
 ## License
 

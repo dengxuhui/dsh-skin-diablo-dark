@@ -71,7 +71,7 @@ body[data-dsh-diablo-dark][data-ds-dark-theme] { ... } /* 暗面 */
 ## 禁忌清单
 
 - 不用 `backdrop-filter`：祖先一旦有它，fixed 后代会被困进祖先盒（设置面板会卡在侧栏里）。磨砂 = 半透明填充。
-- 不携带静态资源文件（内联 SVG / data URI）。
+- 不携带静态资源**文件**——只允许内联（SVG / data URI）。可商用授权的 AI 生成位图允许使用，但必须**降采样压缩后内联 data URI**（当前实现：favicon 徽记 48px PNG、石纹 256px JPEG、圣所插画 640×480 JPEG；用户已拍板允许生成图增强沉浸感，不要求纯程序化）。
 - 不注入服务、不发事件、不碰模型请求（纯呈现层）。
 - 作用域不外漏：不得用裸类名/全局选择器污染其它皮肤。
-- 不用 Blizzard / Diablo 商标资产；背景图须自绘或可商用授权。
+- 不用 Blizzard / Diablo 商标资产；背景/logo 素材须程序化自绘或可商用授权。
