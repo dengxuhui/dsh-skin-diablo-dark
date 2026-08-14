@@ -1,0 +1,28 @@
+{
+  "id": "diablo-dark",
+  "name": "暗黑 · 熔火",
+  "nameEn": "Diablo Dark",
+  "author": "dengxuhui",
+  "tagline": "深黑熔火 · 血色金纹 · 骨白文字",
+  "description": "暗黑哥特风皮肤：沥青黑底、血晶红与熔火金点缀、骨白正文、半透明磨砂面板透出余烬背景。亮/暗两套配色同源（亮面为日晒骨白 parchment 变体），程序化背景不含任何受版权保护的位图素材。",
+  "tags": [
+    "diablo",
+    "dark",
+    "gothic",
+    "blood-red",
+    "molten-gold",
+    "dark-mode"
+  ],
+  "accent": "#b3271e",
+  "bodyAttr": "data-dsh-diablo-dark",
+  "package": "@dengxuhui/dsh-client-ui-skin-diablo-dark",
+  "wiring": {
+    "id": "ui-skin-diablo-dark",
+    "bundleWired": false
+  },
+  "preview": {
+    "light": "preview/light.png",
+    "dark": "preview/dark.png"
+  },
+  "order": 10
+}

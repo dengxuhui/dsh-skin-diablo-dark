@@ -1,0 +1,177 @@
+/* diablo-dark (暗黑·熔火) skin — dark-gothic ambient theme for the dsh web
+   GUI. Everything is scoped under body[data-dsh-diablo-dark], which the
+   plugin's apply() sets (and retracts on dispose), so the skin stays fully
+   hot-pluggable. The dark variant rides
+   body[data-dsh-diablo-dark][data-ds-dark-theme]; the base theme system
+   (light/dark/system) keeps working.
+   The ambient backdrop is procedural CSS gradients (no bitmap assets, no
+   third-party artwork); the palette remap overrides the --dsw-* semantic
+   alias tokens so the whole shell recolours coherently.
+   Deliberately NO backdrop-filter anywhere — an ancestor with
+   backdrop-filter becomes the containing block for fixed-position
+   descendants, which traps overlays like the settings panel inside the
+   sidebar (same discipline as dragon-heir). Translucency is faked with
+   semi-transparent fills instead. */
+
+/* --- Local palette (light = sun-bleached bone, dark = pitch + ember) ------ */
+
+body[data-dsh-diablo-dark] {
+  --dd-bg-0: #ece2cd;
+  --dd-bg-1: #e2d6bd;
+  --dd-bg-2: #d6c7a9;
+  --dd-bg-3: #c9b893;
+  --dd-overlay: #f2e9d5;
+  --dd-blood: #8f1f18;
+  --dd-blood-bright: #b3271e;
+  --dd-gold: #a8762a;
+  --dd-gold-bright: #c9993a;
+  --dd-ink: #1c1410;
+  --dd-ink-2: #4a3b2e;
+  --dd-ink-3: #6b5a48;
+  --dd-ink-invert: #ece2cd;
+  --dd-border: #cbbda3;
+  --dd-border-soft: #d9ccb4;
+  --dd-panel: rgba(255, 250, 240, 0.82);
+  --dd-panel-strong: rgba(255, 250, 240, 0.92);
+  --dd-success: #5e7a38;
+  --dd-warn: #a8762a;
+
+  color: var(--dd-ink);
+  background-color: var(--dd-bg-0);
+  background-image:
+    radial-gradient(1200px 560px at 50% 108%, rgba(143, 31, 24, 0.16), transparent 60%),
+    radial-gradient(900px 460px at 82% 88%, rgba(168, 118, 42, 0.14), transparent 55%),
+    linear-gradient(180deg, #ece2cd 0%, #e2d6bd 48%, #d9c9a9 100%);
+}
+
+body[data-dsh-diablo-dark][data-ds-dark-theme] {
+  --dd-bg-0: #0a0807;
+  --dd-bg-1: #120c0a;
+  --dd-bg-2: #1a120c;
+  --dd-bg-3: #231610;
+  --dd-overlay: #15100c;
+  --dd-blood: #b3271e;
+  --dd-blood-bright: #d6452f;
+  --dd-gold: #c9993a;
+  --dd-gold-bright: #e0a94a;
+  --dd-ink: #e8e0d0;
+  --dd-ink-2: #c4b8a4;
+  --dd-ink-3: #94877a;
+  --dd-ink-invert: #0a0807;
+  --dd-border: #2c2118;
+  --dd-border-soft: #241a12;
+  --dd-panel: rgba(18, 12, 10, 0.78);
+  --dd-panel-strong: rgba(24, 16, 12, 0.92);
+  --dd-success: #7a9a4a;
+  --dd-warn: #c9993a;
+
+  color: var(--dd-ink);
+  background-color: var(--dd-bg-0);
+  background-image:
+    radial-gradient(1200px 560px at 50% 108%, rgba(179, 39, 30, 0.5), transparent 62%),
+    radial-gradient(900px 460px at 82% 88%, rgba(201, 153, 58, 0.22), transparent 55%),
+    radial-gradient(640px 380px at 12% 96%, rgba(143, 20, 16, 0.4), transparent 60%),
+    linear-gradient(180deg, #0a0807 0%, #120c0a 45%, #1a0e0b 100%);
+}
+
+/* --- App frame transparency: let the ambient backdrop show through ------- */
+
+body[data-dsh-diablo-dark] [id='root'] {
+  background: transparent;
+}
+
+/* --- Semantic alias remap (single source, resolves per current theme) ---- */
+
+body[data-dsh-diablo-dark] {
+  --dsw-alias-bg-base: var(--dd-bg-0);
+  --dsw-alias-bg-layer-1: var(--dd-bg-1);
+  --dsw-alias-bg-layer-2: var(--dd-bg-2);
+  --dsw-alias-bg-layer-3: var(--dd-bg-3);
+  --dsw-alias-bg-overlay: var(--dd-overlay);
+  --dsw-alias-bg-module-platform: var(--dd-bg-1);
+  --dsw-alias-bg-multi-select: var(--dd-bg-2);
+  --dsw-alias-bg-skeleton: var(--dd-bg-2);
+
+  --dsw-alias-border-l1: var(--dd-border);
+  --dsw-alias-border-l2: var(--dd-border);
+  --dsw-alias-border-l3: var(--dd-border-soft);
+  --dsw-alias-border-l4: var(--dd-border-soft);
+  --dsw-alias-border-inverted: var(--dd-ink);
+  --dsw-alias-border-inverted2: var(--dd-ink-2);
+
+  --dsw-alias-brand-primary: var(--dd-blood);
+  --dsw-alias-brand-primary-invert: var(--dd-ink-invert);
+  --dsw-alias-brand-text: var(--dd-blood-bright);
+
+  --dsw-alias-label-primary: var(--dd-ink);
+  --dsw-alias-label-primary-inverted: var(--dd-ink-invert);
+  --dsw-alias-label-primary-foreground: var(--dd-ink-invert);
+  --dsw-alias-label-primary-dimmed: var(--dd-ink-2);
+  --dsw-alias-label-secondary: var(--dd-ink-2);
+  --dsw-alias-label-tertiary: var(--dd-ink-3);
+  --dsw-alias-label-dimmed: var(--dd-ink-3);
+  --dsw-alias-label-caption: var(--dd-ink-3);
+
+  --dsw-alias-interactive-bg-hover: var(--dd-bg-2);
+  --dsw-alias-interactive-bg-active: var(--dd-bg-3);
+  --dsw-alias-interactive-bg-hover-solid: var(--dd-bg-2);
+  --dsw-alias-interactive-bg-hover-accent: var(--dd-blood);
+  --dsw-alias-interactive-bg-hover-danger: var(--dd-blood-bright);
+
+  --dsw-alias-button-primary-fill: var(--dd-blood);
+  --dsw-alias-button-primary-hover: var(--dd-blood-bright);
+  --dsw-alias-button-primary-dimmed: var(--dd-bg-3);
+  --dsw-alias-button-tool-bar-fill: var(--dd-bg-1);
+  --dsw-alias-button-tool-bar-hover: var(--dd-bg-2);
+  --dsw-alias-button-floating-fill: var(--dd-bg-2);
+  --dsw-alias-button-floating-hover: var(--dd-bg-3);
+  --dsw-alias-button-contrast-fill: var(--dd-ink);
+  --dsw-alias-button-info-fill: var(--dd-gold);
+  --dsw-alias-button-info-hover: var(--dd-gold-bright);
+
+  --dsw-alias-state-error-primary: var(--dd-blood-bright);
+  --dsw-alias-state-error-secondary: var(--dd-blood);
+  --dsw-alias-state-success-primary: var(--dd-success);
+  --dsw-alias-state-success-secondary: var(--dd-success);
+  --dsw-alias-state-success-tertiary: var(--dd-bg-2);
+  --dsw-alias-state-warn-primary: var(--dd-warn);
+  --dsw-alias-state-warn-secondary: var(--dd-warn);
+  --dsw-alias-state-warn-tertiary: var(--dd-bg-2);
+  --dsw-alias-state-warn-label: var(--dd-warn);
+  --dsw-alias-state-business-primary: var(--dd-gold);
+  --dsw-alias-state-business-tertiary: var(--dd-bg-2);
+
+  --dsw-alias-markdown-code-block: var(--dd-bg-1);
+  --dsw-alias-markdown-code-block-banner: var(--dd-bg-2);
+  --dsw-alias-markdown-inline-code: var(--dd-bg-2);
+  --dsw-alias-markdown-citation: var(--dd-gold);
+  --dsw-alias-markdown-tag: var(--dd-blood);
+  --dsw-alias-markdown-placeholder: var(--dd-ink-3);
+
+  --dsw-specific-sidebar-fill: var(--dd-panel);
+  --dsw-specific-sidebar-nav-item-active: var(--dd-blood);
+  --dsw-specific-sidebar-nav-item-active-accent: var(--dd-gold);
+  --dsw-specific-sidebar-nav-item-hover: var(--dd-bg-2);
+  --dsw-specific-input-major: var(--dd-panel-strong);
+  --dsw-specific-menu: var(--dd-panel-strong);
+  --dsw-specific-selector: var(--dd-bg-1);
+  --dsw-specific-login-input: var(--dd-panel);
+  --dsw-specific-tip: var(--dd-bg-1);
+  --dsw-specific-bubble: var(--dd-panel-strong);
+  --dsw-specific-bubble-highlight: var(--dd-blood);
+
+  --dsw-alias-scrollbar-bg-l1: var(--dd-bg-2);
+  --dsw-alias-scrollbar-bg-l2: var(--dd-bg-3);
+  --dsw-alias-scrollbar-hover-l1: var(--dd-bg-3);
+  --dsw-alias-scrollbar-hover-l2: var(--dd-blood);
+
+  --dsw-alias-toast-bg: var(--dd-panel-strong);
+  --dsw-alias-tooltip-bg: var(--dd-panel-strong);
+}
+
+/* --- Brand accent on selection ------------------------------------------- */
+
+body[data-dsh-diablo-dark] ::selection {
+  background-color: var(--dd-blood);
+  color: var(--dd-ink-invert);
+}
