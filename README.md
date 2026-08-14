@@ -1,5 +1,7 @@
 # dsh-skin-diablo-dark · 暗黑 · 熔火
 
+![暗黑 · 熔火 皮肤预览（dark）](preview/dark.png)
+
 DeepSeek Harness Web GUI 的暗黑哥特风皮肤插件。沥青黑底、血晶红与熔火金点缀、骨白正文，半透明磨砂面板透出程序化余烬背景。
 
 - 纯呈现层：不注入服务、不发事件、不触碰模型请求，只操作 DOM 与 CSS token。
