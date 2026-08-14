@@ -15,12 +15,20 @@ DeepSeek Harness Web GUI 的暗黑哥特风皮肤插件。沥青黑底、血晶�
 dsh plugin --profile web add /path/to/dsh-skin-diablo-dark
 
 # 或从 git 仓库（安装时会在 clone 内执行 prepare 自动构建 lib/，需要能联网拉取 npm 依赖）
-dsh plugin --profile web add github:<owner>/dsh-skin-diablo-dark
+dsh plugin --profile web add github:dengxuhui/dsh-skin-diablo-dark
 ```
 
 > 若 pnpm 拦截了构建脚本（pnpm 10 的安全门禁），会打印提示，把提示里给出的包名加到 profile 的 `pnpm-workspace.yaml` 的 `allowBuilds` 下，再重跑一次即可。
 
-装完重启 `dsh web` 生效。皮肤会在 Web 壳里设置 `body[data-dsh-diablo-dark]`，样式全部挂在该属性下，卸载即还原。
+装完重启 `dsh web` 生效。皮肤会在 Web 壳里设置 `body[data-dsh-diablo-dark]`，样式全部挂在该属性下。
+
+## 卸载
+
+```sh
+dsh plugin --profile web remove @dengxuhui/dsh-client-ui-skin-diablo-dark
+```
+
+卸完重启 `dsh web`，样式、favicon 与背景层全部还原。
 
 ## 开发
 
