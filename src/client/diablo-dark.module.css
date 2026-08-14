@@ -4,69 +4,29 @@
    hot-pluggable. The dark variant rides
    body[data-dsh-diablo-dark][data-ds-dark-theme]; the base theme system
    (light/dark/system) keeps working.
-   The ambient backdrop is procedural CSS gradients (no bitmap assets, no
-   third-party artwork); the palette remap overrides the --dsw-* semantic
-   alias tokens so the whole shell recolours coherently.
-   Deliberately NO backdrop-filter anywhere — an ancestor with
-   backdrop-filter becomes the containing block for fixed-position
-   descendants, which traps overlays like the settings panel inside the
-   sidebar (same discipline as dragon-heir). Translucency is faked with
-   semi-transparent fills instead. */
+   The palette remaps BOTH layers the shell consumes: the --dsw-static-*
+   base swatches and the --dsw-alias-* semantic tokens (the surface the
+   components actually read). The ambient backdrop is procedural CSS
+   gradients (no bitmap assets, no third-party artwork).
+   Deliberately NO backdrop-filter anywhere — an ancestor with backdrop-filter
+   becomes the containing block for fixed-position descendants, which traps
+   overlays like the settings panel inside the sidebar (same discipline as
+   dragon-heir). Translucency is faked with semi-transparent fills. */
 
-/* --- Local palette (light = sun-bleached bone, dark = pitch + ember) ------ */
+/* --- Ambient backdrop (light = sun-bleached bone, dark = pitch + ember) --- */
 
 body[data-dsh-diablo-dark] {
-  --dd-bg-0: #ece2cd;
-  --dd-bg-1: #e2d6bd;
-  --dd-bg-2: #d6c7a9;
-  --dd-bg-3: #c9b893;
-  --dd-overlay: #f2e9d5;
-  --dd-blood: #8f1f18;
-  --dd-blood-bright: #b3271e;
-  --dd-gold: #a8762a;
-  --dd-gold-bright: #c9993a;
-  --dd-ink: #1c1410;
-  --dd-ink-2: #4a3b2e;
-  --dd-ink-3: #6b5a48;
-  --dd-ink-invert: #ece2cd;
-  --dd-border: #cbbda3;
-  --dd-border-soft: #d9ccb4;
-  --dd-panel: rgba(255, 250, 240, 0.82);
-  --dd-panel-strong: rgba(255, 250, 240, 0.92);
-  --dd-success: #5e7a38;
-  --dd-warn: #a8762a;
-
-  color: var(--dd-ink);
-  background-color: var(--dd-bg-0);
+  color: #17120a;
+  background-color: #f7f1e4;
   background-image:
-    radial-gradient(1200px 560px at 50% 108%, rgba(143, 31, 24, 0.16), transparent 60%),
-    radial-gradient(900px 460px at 82% 88%, rgba(168, 118, 42, 0.14), transparent 55%),
-    linear-gradient(180deg, #ece2cd 0%, #e2d6bd 48%, #d9c9a9 100%);
+    radial-gradient(1200px 560px at 50% 108%, rgba(143, 31, 24, 0.14), transparent 60%),
+    radial-gradient(900px 460px at 82% 88%, rgba(168, 118, 42, 0.12), transparent 55%),
+    linear-gradient(180deg, #f7f1e4 0%, #ebe1cd 48%, #e0d0ae 100%);
 }
 
 body[data-dsh-diablo-dark][data-ds-dark-theme] {
-  --dd-bg-0: #0a0807;
-  --dd-bg-1: #120c0a;
-  --dd-bg-2: #1a120c;
-  --dd-bg-3: #231610;
-  --dd-overlay: #15100c;
-  --dd-blood: #b3271e;
-  --dd-blood-bright: #d6452f;
-  --dd-gold: #c9993a;
-  --dd-gold-bright: #e0a94a;
-  --dd-ink: #e8e0d0;
-  --dd-ink-2: #c4b8a4;
-  --dd-ink-3: #94877a;
-  --dd-ink-invert: #0a0807;
-  --dd-border: #2c2118;
-  --dd-border-soft: #241a12;
-  --dd-panel: rgba(18, 12, 10, 0.78);
-  --dd-panel-strong: rgba(24, 16, 12, 0.92);
-  --dd-success: #7a9a4a;
-  --dd-warn: #c9993a;
-
-  color: var(--dd-ink);
-  background-color: var(--dd-bg-0);
+  color: #efe6da;
+  background-color: #0a0807;
   background-image:
     radial-gradient(1200px 560px at 50% 108%, rgba(179, 39, 30, 0.5), transparent 62%),
     radial-gradient(900px 460px at 82% 88%, rgba(201, 153, 58, 0.22), transparent 55%),
@@ -74,104 +34,368 @@ body[data-dsh-diablo-dark][data-ds-dark-theme] {
     linear-gradient(180deg, #0a0807 0%, #120c0a 45%, #1a0e0b 100%);
 }
 
-/* --- App frame transparency: let the ambient backdrop show through ------- */
-
+/* The app frame itself is transparent — the panels below carry the bone
+   (light) / ember (dark) glass over the ambient backdrop. */
 body[data-dsh-diablo-dark] [id='root'] {
   background: transparent;
 }
 
-/* --- Semantic alias remap (single source, resolves per current theme) ---- */
+/* --- Static palette: light (bone parchment + blood + molten gold) --------- */
 
 body[data-dsh-diablo-dark] {
-  --dsw-alias-bg-base: var(--dd-bg-0);
-  --dsw-alias-bg-layer-1: var(--dd-bg-1);
-  --dsw-alias-bg-layer-2: var(--dd-bg-2);
-  --dsw-alias-bg-layer-3: var(--dd-bg-3);
-  --dsw-alias-bg-overlay: var(--dd-overlay);
-  --dsw-alias-bg-module-platform: var(--dd-bg-1);
-  --dsw-alias-bg-multi-select: var(--dd-bg-2);
-  --dsw-alias-bg-skeleton: var(--dd-bg-2);
-
-  --dsw-alias-border-l1: var(--dd-border);
-  --dsw-alias-border-l2: var(--dd-border);
-  --dsw-alias-border-l3: var(--dd-border-soft);
-  --dsw-alias-border-l4: var(--dd-border-soft);
-  --dsw-alias-border-inverted: var(--dd-ink);
-  --dsw-alias-border-inverted2: var(--dd-ink-2);
-
-  --dsw-alias-brand-primary: var(--dd-blood);
-  --dsw-alias-brand-primary-invert: var(--dd-ink-invert);
-  --dsw-alias-brand-text: var(--dd-blood-bright);
-
-  --dsw-alias-label-primary: var(--dd-ink);
-  --dsw-alias-label-primary-inverted: var(--dd-ink-invert);
-  --dsw-alias-label-primary-foreground: var(--dd-ink-invert);
-  --dsw-alias-label-primary-dimmed: var(--dd-ink-2);
-  --dsw-alias-label-secondary: var(--dd-ink-2);
-  --dsw-alias-label-tertiary: var(--dd-ink-3);
-  --dsw-alias-label-dimmed: var(--dd-ink-3);
-  --dsw-alias-label-caption: var(--dd-ink-3);
-
-  --dsw-alias-interactive-bg-hover: var(--dd-bg-2);
-  --dsw-alias-interactive-bg-active: var(--dd-bg-3);
-  --dsw-alias-interactive-bg-hover-solid: var(--dd-bg-2);
-  --dsw-alias-interactive-bg-hover-accent: var(--dd-blood);
-  --dsw-alias-interactive-bg-hover-danger: var(--dd-blood-bright);
-
-  --dsw-alias-button-primary-fill: var(--dd-blood);
-  --dsw-alias-button-primary-hover: var(--dd-blood-bright);
-  --dsw-alias-button-primary-dimmed: var(--dd-bg-3);
-  --dsw-alias-button-tool-bar-fill: var(--dd-bg-1);
-  --dsw-alias-button-tool-bar-hover: var(--dd-bg-2);
-  --dsw-alias-button-floating-fill: var(--dd-bg-2);
-  --dsw-alias-button-floating-hover: var(--dd-bg-3);
-  --dsw-alias-button-contrast-fill: var(--dd-ink);
-  --dsw-alias-button-info-fill: var(--dd-gold);
-  --dsw-alias-button-info-hover: var(--dd-gold-bright);
-
-  --dsw-alias-state-error-primary: var(--dd-blood-bright);
-  --dsw-alias-state-error-secondary: var(--dd-blood);
-  --dsw-alias-state-success-primary: var(--dd-success);
-  --dsw-alias-state-success-secondary: var(--dd-success);
-  --dsw-alias-state-success-tertiary: var(--dd-bg-2);
-  --dsw-alias-state-warn-primary: var(--dd-warn);
-  --dsw-alias-state-warn-secondary: var(--dd-warn);
-  --dsw-alias-state-warn-tertiary: var(--dd-bg-2);
-  --dsw-alias-state-warn-label: var(--dd-warn);
-  --dsw-alias-state-business-primary: var(--dd-gold);
-  --dsw-alias-state-business-tertiary: var(--dd-bg-2);
-
-  --dsw-alias-markdown-code-block: var(--dd-bg-1);
-  --dsw-alias-markdown-code-block-banner: var(--dd-bg-2);
-  --dsw-alias-markdown-inline-code: var(--dd-bg-2);
-  --dsw-alias-markdown-citation: var(--dd-gold);
-  --dsw-alias-markdown-tag: var(--dd-blood);
-  --dsw-alias-markdown-placeholder: var(--dd-ink-3);
-
-  --dsw-specific-sidebar-fill: var(--dd-panel);
-  --dsw-specific-sidebar-nav-item-active: var(--dd-blood);
-  --dsw-specific-sidebar-nav-item-active-accent: var(--dd-gold);
-  --dsw-specific-sidebar-nav-item-hover: var(--dd-bg-2);
-  --dsw-specific-input-major: var(--dd-panel-strong);
-  --dsw-specific-menu: var(--dd-panel-strong);
-  --dsw-specific-selector: var(--dd-bg-1);
-  --dsw-specific-login-input: var(--dd-panel);
-  --dsw-specific-tip: var(--dd-bg-1);
-  --dsw-specific-bubble: var(--dd-panel-strong);
-  --dsw-specific-bubble-highlight: var(--dd-blood);
-
-  --dsw-alias-scrollbar-bg-l1: var(--dd-bg-2);
-  --dsw-alias-scrollbar-bg-l2: var(--dd-bg-3);
-  --dsw-alias-scrollbar-hover-l1: var(--dd-bg-3);
-  --dsw-alias-scrollbar-hover-l2: var(--dd-blood);
-
-  --dsw-alias-toast-bg: var(--dd-panel-strong);
-  --dsw-alias-tooltip-bg: var(--dd-panel-strong);
+  --dsw-static-amber-100: #f8ead0;
+  --dsw-static-amber-400: #e0b25f;
+  --dsw-static-amber-500: #c9993a;
+  --dsw-static-amber-600: #a8762a;
+  --dsw-static-amber-900: #3d2c12;
+  --dsw-static-blue-100: #f3cec8;
+  --dsw-static-blue-300: #dc877a;
+  --dsw-static-blue-400: #cd5f50;
+  --dsw-static-blue-450: #c04838;
+  --dsw-static-blue-500: #b3271e;
+  --dsw-static-blue-50: #fbe9e6;
+  --dsw-static-blue-50p: #f9dfdb;
+  --dsw-static-blue-600: #8f1f18;
+  --dsw-static-blue-75: #f8dcd8;
+  --dsw-static-blue-800: #5a100c;
+  --dsw-static-blue-900: #400a08;
+  --dsw-static-blue-950: #2b0605;
+  --dsw-static-deepseek-100: #f3cec8;
+  --dsw-static-deepseek-200: #e8ada3;
+  --dsw-static-deepseek-300: #dc877a;
+  --dsw-static-deepseek-400: #cd5f50;
+  --dsw-static-deepseek-450: #c04838;
+  --dsw-static-deepseek-500: #b3271e;
+  --dsw-static-deepseek-50: #fbe9e6;
+  --dsw-static-deepseek-600: #8f1f18;
+  --dsw-static-deepseek-700-delete: #741712;
+  --dsw-static-deepseek-800: #5a100c;
+  --dsw-static-deepseek-900: #400a08;
+  --dsw-static-green-100: #e3ebd6;
+  --dsw-static-green-400: #8aa85a;
+  --dsw-static-green-500: #6b8a42;
+  --dsw-static-green-900: #263318;
+  --dsw-static-neutral-00: #f7f1e4;
+  --dsw-static-neutral-1000: #17120a;
+  --dsw-static-neutral-100: #ebe1cd;
+  --dsw-static-neutral-150: #e3d6bd;
+  --dsw-static-neutral-200: #dac9ab;
+  --dsw-static-neutral-250: #d1bd9c;
+  --dsw-static-neutral-300: #c2ac88;
+  --dsw-static-neutral-400: #9c8866;
+  --dsw-static-neutral-500: #827050;
+  --dsw-static-neutral-50: #f3ecdd;
+  --dsw-static-neutral-550: #72603f;
+  --dsw-static-neutral-600: #645331;
+  --dsw-static-neutral-700: #504223;
+  --dsw-static-neutral-800: #3c3119;
+  --dsw-static-neutral-850: #342a15;
+  --dsw-static-neutral-900: #26200f;
+  --dsw-static-neutral-bluish-00: #f7f1e4;
+  --dsw-static-neutral-bluish-1000: #17120a;
+  --dsw-static-neutral-bluish-100: #ebe1cd;
+  --dsw-static-neutral-bluish-150: #e3d6bd;
+  --dsw-static-neutral-bluish-200: #dac9ab;
+  --dsw-static-neutral-bluish-250: #d1bd9c;
+  --dsw-static-neutral-bluish-300: #c2ac88;
+  --dsw-static-neutral-bluish-400: #9c8866;
+  --dsw-static-neutral-bluish-500: #827050;
+  --dsw-static-neutral-bluish-50: #f3ecdd;
+  --dsw-static-neutral-bluish-600: #645331;
+  --dsw-static-neutral-bluish-60: #f1e9d8;
+  --dsw-static-neutral-bluish-700: #504223;
+  --dsw-static-neutral-bluish-750: #463a1e;
+  --dsw-static-neutral-bluish-75: #ece2cd;
+  --dsw-static-neutral-bluish-800: #3c3119;
+  --dsw-static-neutral-bluish-850: #342a15;
+  --dsw-static-neutral-bluish-875: #2d2512;
+  --dsw-static-neutral-bluish-900: #26200f;
+  --dsw-static-neutral-bluish-950: #17120a;
+  --dsw-static-red-100: #f3cec8;
+  --dsw-static-red-400: #d6452f;
+  --dsw-static-red-500: #b3271e;
+  --dsw-static-red-50: #fbe9e6;
+  --dsw-static-red-600: #8f1f18;
+  --dsw-static-red-900: #400a08;
 }
 
-/* --- Brand accent on selection ------------------------------------------- */
+/* --- Static palette: dark (pitch black + ember + blood + gold) ------------ */
+
+body[data-dsh-diablo-dark][data-ds-dark-theme] {
+  --dsw-static-amber-100: #3d2c12;
+  --dsw-static-amber-400: #d9a94f;
+  --dsw-static-amber-500: #c9993a;
+  --dsw-static-amber-600: #b8862f;
+  --dsw-static-amber-900: #3d2c12;
+  --dsw-static-blue-100: #341410;
+  --dsw-static-blue-300: #55231a;
+  --dsw-static-blue-400: #7a3226;
+  --dsw-static-blue-450: #963d2e;
+  --dsw-static-blue-500: #b3271e;
+  --dsw-static-blue-50: #2a0f0c;
+  --dsw-static-blue-50p: #2e110d;
+  --dsw-static-blue-600: #c94434;
+  --dsw-static-blue-75: #31130e;
+  --dsw-static-blue-800: #e27a66;
+  --dsw-static-blue-900: #eea497;
+  --dsw-static-blue-950: #f3c2b8;
+  --dsw-static-deepseek-100: #341410;
+  --dsw-static-deepseek-200: #401a14;
+  --dsw-static-deepseek-300: #55231a;
+  --dsw-static-deepseek-400: #7a3226;
+  --dsw-static-deepseek-450: #963d2e;
+  --dsw-static-deepseek-500: #b3271e;
+  --dsw-static-deepseek-50: #2a0f0c;
+  --dsw-static-deepseek-600: #c94434;
+  --dsw-static-deepseek-700-delete: #d65a47;
+  --dsw-static-deepseek-800: #e27a66;
+  --dsw-static-deepseek-900: #eea497;
+  --dsw-static-green-100: #263318;
+  --dsw-static-green-400: #8aa85a;
+  --dsw-static-green-500: #7a9a4a;
+  --dsw-static-green-900: #263318;
+  --dsw-static-neutral-00: #0a0807;
+  --dsw-static-neutral-1000: #efe6da;
+  --dsw-static-neutral-100: #181009;
+  --dsw-static-neutral-150: #1d140c;
+  --dsw-static-neutral-200: #22170e;
+  --dsw-static-neutral-250: #281b10;
+  --dsw-static-neutral-300: #312116;
+  --dsw-static-neutral-400: #523a27;
+  --dsw-static-neutral-500: #72553a;
+  --dsw-static-neutral-50: #110c0a;
+  --dsw-static-neutral-550: #83654a;
+  --dsw-static-neutral-600: #96775c;
+  --dsw-static-neutral-700: #b09479;
+  --dsw-static-neutral-800: #cab299;
+  --dsw-static-neutral-850: #d7c3ad;
+  --dsw-static-neutral-900: #e3d4c2;
+  --dsw-static-neutral-bluish-00: #0a0807;
+  --dsw-static-neutral-bluish-1000: #efe6da;
+  --dsw-static-neutral-bluish-100: #181009;
+  --dsw-static-neutral-bluish-150: #1d140c;
+  --dsw-static-neutral-bluish-200: #22170e;
+  --dsw-static-neutral-bluish-250: #281b10;
+  --dsw-static-neutral-bluish-300: #312116;
+  --dsw-static-neutral-bluish-400: #523a27;
+  --dsw-static-neutral-bluish-500: #72553a;
+  --dsw-static-neutral-bluish-50: #110c0a;
+  --dsw-static-neutral-bluish-600: #96775c;
+  --dsw-static-neutral-bluish-60: #140e0b;
+  --dsw-static-neutral-bluish-700: #b09479;
+  --dsw-static-neutral-bluish-750: #bca48c;
+  --dsw-static-neutral-bluish-75: #16100c;
+  --dsw-static-neutral-bluish-800: #cab299;
+  --dsw-static-neutral-bluish-850: #d7c3ad;
+  --dsw-static-neutral-bluish-875: #ddccc0;
+  --dsw-static-neutral-bluish-900: #e3d4c2;
+  --dsw-static-neutral-bluish-950: #eae0d5;
+  --dsw-static-red-100: #341410;
+  --dsw-static-red-400: #d6452f;
+  --dsw-static-red-500: #b3271e;
+  --dsw-static-red-50: #2a0f0c;
+  --dsw-static-red-600: #e0553d;
+  --dsw-static-red-900: #400a08;
+}
+
+/* --- Alias palette: light -------------------------------------------------- */
+
+body[data-dsh-diablo-dark] {
+  --dsh-accent: #b3271e;
+  --dsw-alias-bg-base: rgba(247, 241, 228, 0.72);
+  --dsw-alias-bg-layer-1: rgba(243, 236, 221, 0.62);
+  --dsw-alias-bg-layer-2: rgba(235, 225, 205, 0.66);
+  --dsw-alias-bg-layer-3: rgba(226, 214, 189, 0.7);
+  --dsw-alias-bg-mask-1: rgba(23, 18, 10, 0.32);
+  --dsw-alias-bg-mask-2: rgba(23, 18, 10, 0.15);
+  --dsw-alias-bg-mask-3: rgba(23, 18, 10, 0.4);
+  --dsw-alias-bg-mask-drop: rgba(23, 18, 10, 0.6);
+  --dsw-alias-bg-mask-photo: rgba(23, 18, 10, 0.7);
+  --dsw-alias-bg-module-platform: rgba(235, 225, 205, 0.66);
+  --dsw-alias-bg-multi-select: rgba(243, 206, 200, 0.8);
+  --dsw-alias-bg-overlay: rgba(248, 243, 232, 0.9);
+  --dsw-alias-bg-skeleton: rgba(23, 18, 10, 0.06);
+  --dsw-alias-border-inverted2: rgba(255, 255, 255, 0.6);
+  --dsw-alias-border-inverted: rgba(255, 255, 255, 0.4);
+  --dsw-alias-border-l1: rgba(100, 83, 49, 0.16);
+  --dsw-alias-border-l2-darkmode-thin: rgba(100, 83, 49, 0.2);
+  --dsw-alias-border-l2: rgba(100, 83, 49, 0.22);
+  --dsw-alias-border-l3: rgba(100, 83, 49, 0.32);
+  --dsw-alias-border-l4: rgba(100, 83, 49, 0.42);
+  --dsw-alias-brand-primary-invert: #ffffff;
+  --dsw-alias-brand-primary-new-colorprimary-new-color: #b3271e;
+  --dsw-alias-brand-primary: #b3271e;
+  --dsw-alias-brand-text: #4a120c;
+  --dsw-alias-button-contrast-fill: #8f1f18;
+  --dsw-alias-button-elevated-fill: #ffffff;
+  --dsw-alias-button-floating-fill: #ffffff;
+  --dsw-alias-button-floating-hover: #efe6d8;
+  --dsw-alias-button-ghost-active-border: #dc877a;
+  --dsw-alias-button-ghost-active-fill: #f3cec8;
+  --dsw-alias-button-ghost-active-hover: #e8ada3;
+  --dsw-alias-button-info-fill: #c9993a;
+  --dsw-alias-button-info-hover: #d9a94f;
+  --dsw-alias-button-primary-dimmed: #f3cec8;
+  --dsw-alias-button-primary-fill: #b3271e;
+  --dsw-alias-button-primary-hover: #c94434;
+  --dsw-alias-button-tool-bar-fill-invisible: rgba(179, 39, 30, 0.36);
+  --dsw-alias-button-tool-bar-fill: rgba(179, 39, 30, 0.5);
+  --dsw-alias-button-tool-bar-hover: rgba(179, 39, 30, 0.6);
+  --dsw-alias-interactive-bg-active: rgba(179, 39, 30, 0.14);
+  --dsw-alias-interactive-bg-hover-accent: rgba(179, 39, 30, 0.18);
+  --dsw-alias-interactive-bg-hover-danger: rgba(179, 39, 30, 0.06);
+  --dsw-alias-interactive-bg-hover-solid: #efe6d8;
+  --dsw-alias-interactive-bg-hover: rgba(179, 39, 30, 0.08);
+  --dsw-alias-label-caption: #827050;
+  --dsw-alias-label-dimmed: #827050;
+  --dsw-alias-label-primary-bluish: #17120a;
+  --dsw-alias-label-primary-dimmed: #3c3119;
+  --dsw-alias-label-primary-foreground: #ffffff;
+  --dsw-alias-label-primary-inverted: #ffffff;
+  --dsw-alias-label-primary: #17120a;
+  --dsw-alias-label-secondary: #504223;
+  --dsw-alias-label-tertiary: #645331;
+  --dsw-alias-markdown-citation: rgba(235, 225, 205, 0.6);
+  --dsw-alias-markdown-code-block-banner: rgba(243, 236, 221, 0.5);
+  --dsw-alias-markdown-code-block: rgba(243, 236, 221, 0.5);
+  --dsw-alias-markdown-code-segment-selected: rgba(255, 255, 255, 0.8);
+  --dsw-alias-markdown-code-segment-unselected: rgba(247, 241, 228, 0.6);
+  --dsw-alias-markdown-inline-code: rgba(235, 225, 205, 0.6);
+  --dsw-alias-markdown-placeholder: rgba(243, 236, 221, 0.58);
+  --dsw-alias-markdown-tag: rgba(235, 225, 205, 0.6);
+  --dsw-alias-scrollbar-bg-l1: #dac9ab;
+  --dsw-alias-scrollbar-bg-l2: #dac9ab;
+  --dsw-alias-scrollbar-hover-l1: #9c8866;
+  --dsw-alias-scrollbar-hover-l2: #9c8866;
+  --dsw-alias-state-business-primary: #6b8a42;
+  --dsw-alias-state-business-tertiary: #e3ebd6;
+  --dsw-alias-state-error-primary: #b3271e;
+  --dsw-alias-state-error-secondary: #d6452f;
+  --dsw-alias-state-success-primary: #6b8a42;
+  --dsw-alias-state-success-secondary: #7a9a4a;
+  --dsw-alias-state-success-tertiary: #e3ebd6;
+  --dsw-alias-state-warn-label: #a8762a;
+  --dsw-alias-state-warn-primary: #c9993a;
+  --dsw-alias-state-warn-secondary: #d9a94f;
+  --dsw-alias-state-warn-tertiary: #f8ead0;
+  --dsw-alias-toast-bg: #8f1f18;
+  --dsw-alias-tooltip-bg: #17120a;
+  --dsw-specific-bubble-highlight: #e8ada3;
+  --dsw-specific-bubble: #f3cec8;
+  --dsw-specific-input-major: rgba(255, 255, 255, 0.6);
+  --dsw-specific-login-input: rgba(255, 255, 255, 0.6);
+  --dsw-specific-menu: rgba(248, 243, 232, 0.9);
+  --dsw-specific-selector: rgba(243, 235, 217, 0.8);
+  --dsw-specific-sidebar-fill: rgba(246, 241, 230, 0.4);
+  --dsw-specific-sidebar-nav-item-active-accent: #dc877a;
+  --dsw-specific-sidebar-nav-item-active: #f3cec8;
+  --dsw-specific-sidebar-nav-item-hover: #efe6d8;
+  --dsw-specific-tip: #f3ecdd;
+}
+
+/* --- Alias palette: dark (ember + blood + gold on pitch) ------------------- */
+
+body[data-dsh-diablo-dark][data-ds-dark-theme] {
+  --dsh-accent: #c9993a;
+  --dsw-alias-bg-base: rgba(10, 8, 7, 0.72);
+  --dsw-alias-bg-layer-1: rgba(17, 12, 10, 0.62);
+  --dsw-alias-bg-layer-2: rgba(24, 16, 9, 0.66);
+  --dsw-alias-bg-layer-3: rgba(31, 21, 14, 0.7);
+  --dsw-alias-bg-mask-1: rgba(0, 0, 0, 0.45);
+  --dsw-alias-bg-mask-2: rgba(0, 0, 0, 0.22);
+  --dsw-alias-bg-mask-3: rgba(0, 0, 0, 0.5);
+  --dsw-alias-bg-mask-drop: rgba(0, 0, 0, 0.6);
+  --dsw-alias-bg-mask-photo: rgba(0, 0, 0, 0.82);
+  --dsw-alias-bg-module-platform: rgba(24, 16, 9, 0.66);
+  --dsw-alias-bg-multi-select: rgba(49, 33, 22, 0.8);
+  --dsw-alias-bg-overlay: rgba(22, 14, 10, 0.9);
+  --dsw-alias-bg-skeleton: rgba(255, 255, 255, 0.06);
+  --dsw-alias-border-inverted2: rgba(255, 255, 255, 0.6);
+  --dsw-alias-border-inverted: rgba(255, 255, 255, 0.4);
+  --dsw-alias-border-l1: rgba(176, 148, 121, 0.12);
+  --dsw-alias-border-l2-darkmode-thin: rgba(176, 148, 121, 0.15);
+  --dsw-alias-border-l2: rgba(176, 148, 121, 0.18);
+  --dsw-alias-border-l3: rgba(176, 148, 121, 0.26);
+  --dsw-alias-border-l4: rgba(176, 148, 121, 0.34);
+  --dsw-alias-brand-primary-invert: #0a0807;
+  --dsw-alias-brand-primary-new-colorprimary-new-color: #c9993a;
+  --dsw-alias-brand-primary: #b3271e;
+  --dsw-alias-brand-text: #e8ada3;
+  --dsw-alias-button-contrast-fill: #b3271e;
+  --dsw-alias-button-elevated-fill: #181009;
+  --dsw-alias-button-floating-fill: #181009;
+  --dsw-alias-button-floating-hover: #281b10;
+  --dsw-alias-button-ghost-active-border: #c9993a;
+  --dsw-alias-button-ghost-active-fill: #281b10;
+  --dsw-alias-button-ghost-active-hover: #341410;
+  --dsw-alias-button-info-fill: #a8762a;
+  --dsw-alias-button-info-hover: #c9993a;
+  --dsw-alias-button-primary-dimmed: #341410;
+  --dsw-alias-button-primary-fill: #b3271e;
+  --dsw-alias-button-primary-hover: #d6452f;
+  --dsw-alias-button-tool-bar-fill-invisible: rgba(179, 39, 30, 0.36);
+  --dsw-alias-button-tool-bar-fill: rgba(179, 39, 30, 0.5);
+  --dsw-alias-button-tool-bar-hover: rgba(179, 39, 30, 0.6);
+  --dsw-alias-interactive-bg-active: rgba(179, 39, 30, 0.16);
+  --dsw-alias-interactive-bg-hover-accent: rgba(179, 39, 30, 0.2);
+  --dsw-alias-interactive-bg-hover-danger: rgba(214, 69, 47, 0.12);
+  --dsw-alias-interactive-bg-hover-solid: #281b10;
+  --dsw-alias-interactive-bg-hover: rgba(255, 255, 255, 0.07);
+  --dsw-alias-label-caption: #96775c;
+  --dsw-alias-label-dimmed: #96775c;
+  --dsw-alias-label-primary-bluish: #efe6da;
+  --dsw-alias-label-primary-dimmed: #d7c3ad;
+  --dsw-alias-label-primary-foreground: #ffffff;
+  --dsw-alias-label-primary-inverted: #0a0807;
+  --dsw-alias-label-primary: #efe6da;
+  --dsw-alias-label-secondary: #cab299;
+  --dsw-alias-label-tertiary: #b09479;
+  --dsw-alias-markdown-citation: rgba(24, 16, 9, 0.6);
+  --dsw-alias-markdown-code-block-banner: rgba(17, 12, 10, 0.6);
+  --dsw-alias-markdown-code-block: rgba(17, 12, 10, 0.6);
+  --dsw-alias-markdown-code-segment-selected: rgba(49, 33, 22, 0.75);
+  --dsw-alias-markdown-code-segment-unselected: rgba(17, 12, 10, 0.6);
+  --dsw-alias-markdown-inline-code: rgba(24, 16, 9, 0.62);
+  --dsw-alias-markdown-placeholder: rgba(17, 12, 10, 0.6);
+  --dsw-alias-markdown-tag: rgba(24, 16, 9, 0.62);
+  --dsw-alias-scrollbar-bg-l1: #281b10;
+  --dsw-alias-scrollbar-bg-l2: #281b10;
+  --dsw-alias-scrollbar-hover-l1: #72553a;
+  --dsw-alias-scrollbar-hover-l2: #72553a;
+  --dsw-alias-state-business-primary: #c9993a;
+  --dsw-alias-state-business-tertiary: #281b10;
+  --dsw-alias-state-error-primary: #d6452f;
+  --dsw-alias-state-error-secondary: #d6452f;
+  --dsw-alias-state-success-primary: #7a9a4a;
+  --dsw-alias-state-success-secondary: #7a9a4a;
+  --dsw-alias-state-success-tertiary: #263318;
+  --dsw-alias-state-warn-label: #d9a94f;
+  --dsw-alias-state-warn-primary: #d9a94f;
+  --dsw-alias-state-warn-secondary: #d9a94f;
+  --dsw-alias-state-warn-tertiary: #3d2c12;
+  --dsw-alias-toast-bg: #8f1f18;
+  --dsw-alias-tooltip-bg: #efe6da;
+  --dsw-specific-bubble-highlight: #341410;
+  --dsw-specific-bubble: #281b10;
+  --dsw-specific-input-major: rgba(17, 12, 10, 0.65);
+  --dsw-specific-login-input: rgba(17, 12, 10, 0.65);
+  --dsw-specific-menu: rgba(22, 14, 10, 0.9);
+  --dsw-specific-selector: rgba(24, 16, 9, 0.8);
+  --dsw-specific-sidebar-fill: rgba(20, 13, 9, 0.4);
+  --dsw-specific-sidebar-nav-item-active-accent: #55231a;
+  --dsw-specific-sidebar-nav-item-active: #341410;
+  --dsw-specific-sidebar-nav-item-hover: #22170e;
+  --dsw-specific-tip: #181009;
+}
+
+/* --- Chrome details: scrollbars, selection --------------------------------- */
+
+body[data-dsh-diablo-dark] {
+  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+}
 
 body[data-dsh-diablo-dark] ::selection {
-  background-color: var(--dd-blood);
-  color: var(--dd-ink-invert);
+  background-color: #b3271e;
+  color: #ffffff;
 }
